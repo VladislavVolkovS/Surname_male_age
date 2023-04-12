@@ -6,9 +6,23 @@ import java.time.*;
 import java.util.regex.*;
 import java.util.regex.Matcher;
 import java.util.Date;
-import java.util.Scanner;
 import javax.swing.*;
 public class Main {
+    private static String writing_year(int age){
+        if (age > 10 && age < 20){
+            return " лет";
+        }
+        int a = age % 10;
+        if (a == 0 || a >=5){
+            return " лет";
+        }
+        else if (a==1){
+            return " год";
+        }
+        else {
+            return " года";
+        }
+    }
     private static char checkSymbol(char a, boolean big){
         if (big){
             if (a >= 'а' && a <= 'я'){
@@ -83,20 +97,29 @@ public class Main {
     }
     public static void main(String[] args){
         JFrame window = new JFrame("ФИО Пол Возраст");
-        window.getContentPane().setBackground(Color.LIGHT_GRAY);
-        window.setBounds(100, 100, 800, 500);
+        window.getContentPane().setBackground(Color.GRAY);
+        window.setSize(800, 500);
+        window.setLocationRelativeTo(null);
         window.setLayout(null);
+        Font font1 = new Font("Lucida Sans Unicode", Font.BOLD, 14);
         JLabel label1 = new JLabel("Введите фамилию, имя, отчество и дату рождения в формате день(dd), месяц(mm), год(yyyy)!");
-        label1.setBounds(120, 90, 560, 20);
+        label1.setBounds(20, 160, 760, 30);
+        label1.setFont(font1);
+        label1.setForeground(Color.BLACK);
         window.add(label1);
+        Font font2 = new Font("Verdana", Font.ITALIC, 12);
         JLabel label2 = new JLabel("(с) В качестве разделителей для даты можете использовать знаки пунктуации");
-        label2.setBounds(120, 110, 600, 20);
+        label2.setFont(font2);
+        label2.setForeground(Color.LIGHT_GRAY);
+        label2.setBounds(120, 190, 600, 20);
         window.add(label2);
         JTextField first_Field = new JTextField("Иванов Иван Иванович 01.01.1999");
-        first_Field.setBounds(250, 180, 300,50);
+        first_Field.setHorizontalAlignment(JTextField.CENTER);
+        first_Field.setBounds(250, 220, 300,50);
+        first_Field.setBackground(Color.LIGHT_GRAY);
         window.add(first_Field);
         JButton button = new JButton("Определить");
-        button.setBounds(300, 240, 200, 20);
+        button.setBounds(300, 280, 200, 20);
         button.setBackground(Color.CYAN);
         button.setForeground(Color.BLACK);
         window.add(button);
@@ -131,9 +154,9 @@ public class Main {
                     LocalDate localDateTime = zonedDateTime.toLocalDate();
                     int age = calculateAge(localDateTime, localCurrentTime);
                     if ((str[2].charAt(str[2].length() - 2) == 'и' || str[2].charAt(str[2].length() - 2) == 'И') && (str[2].charAt(str[2].length() - 1) == 'ч' || str[2].charAt(str[2].length() - 1) == 'Ч')) {
-                        JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0), true) + '.' + checkSymbol(str[2].charAt(0), true) + '.' + '\n' + "Пол: Мужской" + '\n' + "Возраст:" + age, "Результат", JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0), true) + '.' + checkSymbol(str[2].charAt(0), true) + '.' + '\n' + "Пол: Мужской" + '\n' + "Возраст: " + age + writing_year(age), "Результат", JOptionPane.PLAIN_MESSAGE);
                     } else if ((str[2].charAt(str[2].length() - 2) == 'н' || str[2].charAt(str[2].length() - 2) == 'Н') && (str[2].charAt(str[2].length() - 1) == 'а' || str[2].charAt(str[2].length() - 1) == 'А')) {
-                        JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0),true) + '.' + checkSymbol(str[2].charAt(0),true) + '.' + '\n' + "Пол: Женский" + '\n' + "Возраст:" + age, "Результат", JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0),true) + '.' + checkSymbol(str[2].charAt(0),true) + '.' + '\n' + "Пол: Женский" + '\n' + "Возраст: " + age + writing_year(age), "Результат", JOptionPane.PLAIN_MESSAGE);
                     } else {
                         throw new Exception("Невозможно определить пол!");
                     }
@@ -143,6 +166,8 @@ public class Main {
                 }
             }
         };
+        JRootPane rootPane = SwingUtilities.getRootPane(button);
+        rootPane.setDefaultButton(button);
         button.addActionListener(actionListener);
         window.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         window.setVisible(true);
