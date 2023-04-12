@@ -4,7 +4,7 @@
 
 Пример:
 
-![image](https://user-images.githubusercontent.com/105912739/231596324-ea4defe6-0d53-4500-ae65-b8f8db26ab96.png)
+![image](https://user-images.githubusercontent.com/105912739/231610354-2f18ee6d-68ac-4d59-ad50-322efc7e21f1.png)
 
 Результат:
 
