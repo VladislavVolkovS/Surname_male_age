@@ -8,4 +8,4 @@
 
 Результат:
 
-![image](https://user-images.githubusercontent.com/105912739/231596558-955e6c83-100e-41ca-9649-dffc22c05ea3.png)
+![image](https://user-images.githubusercontent.com/105912739/231610264-c30515bb-89b2-45e2-a500-97bbd0ad3505.png)
