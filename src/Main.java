@@ -1,10 +1,13 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.regex.*;
 import java.util.regex.Matcher;
 import java.util.Date;
 import java.util.Scanner;
-
+import javax.swing.*;
 public class Main {
     private static char checkSymbol(char a, boolean big){
         if (big){
@@ -79,47 +82,69 @@ public class Main {
         }
     }
     public static void main(String[] args){
-        System.out.println("Введите фамилию, имя, отчество и дату рождения в формате день(dd), месяц(mm), год(yyyy)!");
-        System.out.println("(с) В качестве разделителей для даты можете использовать знаки пунктуации");
-        System.out.println("Пример: Иванов Иван Иванович 01.01.1999");
-        try {
-            Scanner sc = new Scanner(System.in);
-            String s = sc.nextLine();
-            String[] str = s.split(" ");
-            if (str.length != 4) {
-                throw new Exception("Некорретный формат ввода!");
+        JFrame window = new JFrame("ФИО Пол Возраст");
+        window.getContentPane().setBackground(Color.LIGHT_GRAY);
+        window.setBounds(100, 100, 800, 500);
+        window.setLayout(null);
+        JLabel label1 = new JLabel("Введите фамилию, имя, отчество и дату рождения в формате день(dd), месяц(mm), год(yyyy)!");
+        label1.setBounds(120, 90, 560, 20);
+        window.add(label1);
+        JLabel label2 = new JLabel("(с) В качестве разделителей для даты можете использовать знаки пунктуации");
+        label2.setBounds(120, 110, 600, 20);
+        window.add(label2);
+        JTextField first_Field = new JTextField("Иванов Иван Иванович 01.01.1999");
+        first_Field.setBounds(250, 180, 300,50);
+        window.add(first_Field);
+        JButton button = new JButton("Определить");
+        button.setBounds(300, 240, 200, 20);
+        button.setBackground(Color.CYAN);
+        button.setForeground(Color.BLACK);
+        window.add(button);
+        ActionListener actionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String s = first_Field.getText();
+                    String[] str = s.split(" ");
+                    if (str.length != 4) {
+                        throw new Exception("Некорретный формат ввода!");
+                    }
+                    if (check_Name(str[0])){
+                        throw new Exception("Некорретный формат фамилии!");
+                    }
+                    if (check_Name(str[1])){
+                        throw new Exception("Некорретный формат имени!");
+                    }
+                    if (check_Name(str[2])){
+                        throw new Exception("Некорретный формат отчества!");
+                    }
+                    Date currentDate = new Date();
+                    Date birthDate = GetBirthDay(str[3]);
+                    if (birthDate.after(currentDate)) {
+                        throw new Exception("Некорректная дата рождения(Вы ввели дату рождения в будущем)");
+                    }
+                    Instant currentInstant = currentDate.toInstant();
+                    ZonedDateTime zonedCurrentTime = currentInstant.atZone(ZoneId.systemDefault());
+                    LocalDate localCurrentTime = zonedCurrentTime.toLocalDate();
+                    Instant instant = birthDate.toInstant();
+                    ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+                    LocalDate localDateTime = zonedDateTime.toLocalDate();
+                    int age = calculateAge(localDateTime, localCurrentTime);
+                    if ((str[2].charAt(str[2].length() - 2) == 'и' || str[2].charAt(str[2].length() - 2) == 'И') && (str[2].charAt(str[2].length() - 1) == 'ч' || str[2].charAt(str[2].length() - 1) == 'Ч')) {
+                        JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0), true) + '.' + checkSymbol(str[2].charAt(0), true) + '.' + '\n' + "Пол: Мужской" + '\n' + "Возраст:" + age, "Результат", JOptionPane.PLAIN_MESSAGE);
+                    } else if ((str[2].charAt(str[2].length() - 2) == 'н' || str[2].charAt(str[2].length() - 2) == 'Н') && (str[2].charAt(str[2].length() - 1) == 'а' || str[2].charAt(str[2].length() - 1) == 'А')) {
+                        JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0),true) + '.' + checkSymbol(str[2].charAt(0),true) + '.' + '\n' + "Пол: Женский" + '\n' + "Возраст:" + age, "Результат", JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        throw new Exception("Невозможно определить пол!");
+                    }
+                }
+                catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Ошибка!", JOptionPane.PLAIN_MESSAGE);
+                }
             }
-            if (check_Name(str[0])){
-                throw new Exception("Некорретный формат фамилии!");
-            }
-            if (check_Name(str[1])){
-                throw new Exception("Некорретный формат имени!");
-            }
-            if (check_Name(str[2])){
-                throw new Exception("Некорретный формат отчества!");
-            }
-            Date currentDate = new Date();
-            Date birthDate = GetBirthDay(str[3]);
-            if (birthDate.after(currentDate)) {
-                throw new Exception("Некорректная дата рождения(Вы ввели дату рождения в будущем)");
-            }
-            Instant currentInstant = currentDate.toInstant();
-            ZonedDateTime zonedCurrentTime = currentInstant.atZone(ZoneId.systemDefault());
-            LocalDate localCurrentTime = zonedCurrentTime.toLocalDate();
-            Instant instant = birthDate.toInstant();
-            ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
-            LocalDate localDateTime = zonedDateTime.toLocalDate();
-            int age = calculateAge(localDateTime, localCurrentTime);
-            if ((str[2].charAt(str[2].length() - 2) == 'и' || str[2].charAt(str[2].length() - 2) == 'И') && (str[2].charAt(str[2].length() - 1) == 'ч' || str[2].charAt(str[2].length() - 1) == 'Ч')) {
-                System.out.println(checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0), true) + '.' + checkSymbol(str[2].charAt(0), true) + '.' + '\n' + "Пол: Мужской" + '\n' + "Возраст:" + age);
-            } else if ((str[2].charAt(str[2].length() - 2) == 'н' || str[2].charAt(str[2].length() - 2) == 'Н') && (str[2].charAt(str[2].length() - 1) == 'а' || str[2].charAt(str[2].length() - 1) == 'А')) {
-                System.out.println(checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0),true) + '.' + checkSymbol(str[2].charAt(0),true) + '.' + '\n' + "Пол: Женский" + '\n' + "Возраст:" + age);
-            } else {
-                throw new Exception("Невозможно определить пол!");
-            }
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+        };
+        button.addActionListener(actionListener);
+        window.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        window.setVisible(true);
     }
 }
