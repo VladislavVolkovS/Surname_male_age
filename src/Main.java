@@ -56,7 +56,7 @@ public class Main {
     private static boolean checkData(int day, int month, int year){
         boolean b1 = (month == 4 || month == 6 || month == 9 || month == 11) && day >= 1 && day <= 30;
         boolean b = (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) && day >= 1 && day <= 31;
-        if (year % 4 == 0){
+        if ((year % 4 == 0 && year % 100 != 0 ) || (year % 400 == 0)){
             if (b){
                 return true;
             }
@@ -153,9 +153,9 @@ public class Main {
                     ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
                     LocalDate localDateTime = zonedDateTime.toLocalDate();
                     int age = calculateAge(localDateTime, localCurrentTime);
-                    if ((str[2].charAt(str[2].length() - 2) == 'и' || str[2].charAt(str[2].length() - 2) == 'И') && (str[2].charAt(str[2].length() - 1) == 'ч' || str[2].charAt(str[2].length() - 1) == 'Ч')) {
+                    if ((checkSymbol(str[2].charAt(str[2].length() - 2), false) == 'и') && (checkSymbol(str[2].charAt(str[2].length() - 1), false) == 'ч')) {
                         JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0), true) + '.' + checkSymbol(str[2].charAt(0), true) + '.' + '\n' + "Пол: Мужской" + '\n' + "Возраст: " + age + writing_year(age), "Результат", JOptionPane.PLAIN_MESSAGE);
-                    } else if ((str[2].charAt(str[2].length() - 2) == 'н' || str[2].charAt(str[2].length() - 2) == 'Н') && (str[2].charAt(str[2].length() - 1) == 'а' || str[2].charAt(str[2].length() - 1) == 'А')) {
+                    } else if ((checkSymbol(str[2].charAt(str[2].length() - 2), false) == 'н') && (checkSymbol(str[2].charAt(str[2].length() - 1), false) == 'а')) {
                         JOptionPane.showMessageDialog(null, checkSurname(str[0]) + ' ' + checkSymbol(str[1].charAt(0),true) + '.' + checkSymbol(str[2].charAt(0),true) + '.' + '\n' + "Пол: Женский" + '\n' + "Возраст: " + age + writing_year(age), "Результат", JOptionPane.PLAIN_MESSAGE);
                     } else {
                         throw new Exception("Невозможно определить пол!");
