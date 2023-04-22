@@ -25,16 +25,10 @@ public class Main {
     }
     private static char checkSymbol(char a, boolean big){
         if (big){
-            if (a >= 'а' && a <= 'я'){
-                return (char)('A' + (a - 'a'));
-            }
-            else return a;
+            return Character.toUpperCase(a);
         }
         else{
-            if (a >= 'А' && a <= 'Я'){
-                return (char)('а' + (a - 'А'));
-            }
-            else return a;
+            return Character.toLowerCase(a);
         }
     }
     private static String checkSurname(String str){

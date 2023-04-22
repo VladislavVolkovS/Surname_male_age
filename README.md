@@ -1,11 +1,11 @@
 # Surname_male_age
 ## Программа с использованием UI(swing)
-Определяет пол и возвраст, пишет фамилию и инициалы.
+Определяет и выводит пол и возвраст по ФИО и дате рождения, а также выводит фамилию и инициалы.
 
 Пример:
 
-![image](https://user-images.githubusercontent.com/105912739/231596324-ea4defe6-0d53-4500-ae65-b8f8db26ab96.png)
+![image](https://user-images.githubusercontent.com/105912739/231610354-2f18ee6d-68ac-4d59-ad50-322efc7e21f1.png)
 
 Результат:
 
-![image](https://user-images.githubusercontent.com/105912739/231596558-955e6c83-100e-41ca-9649-dffc22c05ea3.png)
+![image](https://user-images.githubusercontent.com/105912739/231610264-c30515bb-89b2-45e2-a500-97bbd0ad3505.png)
